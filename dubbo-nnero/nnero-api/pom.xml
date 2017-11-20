@@ -6,12 +6,13 @@
     <parent>
         <groupId>com.alibaba</groupId>
         <artifactId>dubbo-nnero</artifactId>
-        <version>2.5.4-SNAPSHOT</version>
+        <version>3.0.0</version>
     </parent>
 
     <artifactId>nnero-api</artifactId>
     <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
+    <version>1.0</version>
+    <name>nnero-api</name>
     <description>nnero-api of test</description>
     <properties>
         <skip_maven_deploy>false</skip_maven_deploy>

@@ -1,5 +1,6 @@
 package me.nnero.repo;
 
+import lombok.extern.slf4j.Slf4j;
 import nnero.entity.User;
 import org.springframework.stereotype.Repository;
 
@@ -12,12 +13,13 @@ import java.util.*;
  * Time: 2017/11/19 22:23
  **/
 @Repository
+@Slf4j
 public class UserRepo {
 
     private static final LinkedHashMap<String,User> USER_MAP = new LinkedHashMap<String, User>();
 
     public void init(){
-        System.out.println("userrepo init");
+        log.info("userrepo init");
         User user = new User();
         user.setName("nnero");
         user.setPassword("123456");

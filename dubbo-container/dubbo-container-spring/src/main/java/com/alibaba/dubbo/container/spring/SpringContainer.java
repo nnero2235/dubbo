@@ -43,7 +43,11 @@ public class SpringContainer implements Container {
         if (configPath == null || configPath.length() == 0) {
             configPath = DEFAULT_SPRING_CONFIG;
         }
-        context = new ClassPathXmlApplicationContext(configPath.split("[,\\s]+"));
+        String[] configFileLocations = configPath.split("[,\\s]+");
+        for(String configFile : configFileLocations){
+            System.out.println(configFile);
+        }
+        context = new ClassPathXmlApplicationContext(configFileLocations);
         context.start();
     }
 
