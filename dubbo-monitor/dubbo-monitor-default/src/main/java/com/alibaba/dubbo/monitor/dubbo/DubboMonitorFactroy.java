@@ -35,6 +35,10 @@ public class DubboMonitorFactroy extends AbstractMonitorFactory {
 
     private ProxyFactory proxyFactory;
 
+    public DubboMonitorFactroy(){
+        System.out.println("DubboMonitorFactroy init");
+    }
+
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
     }

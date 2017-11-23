@@ -30,13 +30,7 @@ import com.alibaba.dubbo.remoting.exchange.ExchangeHandler;
 import com.alibaba.dubbo.remoting.exchange.ExchangeServer;
 import com.alibaba.dubbo.remoting.exchange.Exchangers;
 import com.alibaba.dubbo.remoting.exchange.support.ExchangeHandlerAdapter;
-import com.alibaba.dubbo.rpc.Exporter;
-import com.alibaba.dubbo.rpc.Invocation;
-import com.alibaba.dubbo.rpc.Invoker;
-import com.alibaba.dubbo.rpc.Protocol;
-import com.alibaba.dubbo.rpc.RpcContext;
-import com.alibaba.dubbo.rpc.RpcException;
-import com.alibaba.dubbo.rpc.RpcInvocation;
+import com.alibaba.dubbo.rpc.*;
 import com.alibaba.dubbo.rpc.protocol.AbstractProtocol;
 
 import java.net.InetSocketAddress;
@@ -99,7 +93,8 @@ public class DubboProtocol extends AbstractProtocol {
                     }
                 }
                 RpcContext.getContext().setRemoteAddress(channel.getRemoteAddress());
-                return invoker.invoke(inv);
+                Result result = invoker.invoke(inv);
+                return result;
             }
             throw new RemotingException(channel, "Unsupported request: " + message == null ? null : (message.getClass().getName() + ": " + message) + ", channel: consumer: " + channel.getRemoteAddress() + " --> provider: " + channel.getLocalAddress());
         }
@@ -365,8 +360,10 @@ public class DubboProtocol extends AbstractProtocol {
         try {
             //设置连接应该是lazy的 
             if (url.getParameter(Constants.LAZY_CONNECT_KEY, false)) {
+                System.out.println("lazy connect");
                 client = new LazyConnectExchangeClient(url, requestHandler);
             } else {
+                System.out.println("immediately connect");
                 client = Exchangers.connect(url, requestHandler);
             }
         } catch (RemotingException e) {

@@ -101,6 +101,9 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
                 String[] packages = Constants.COMMA_SPLIT_PATTERN.split(annotationPackage);
                 Method scan = scannerClass.getMethod("scan", new Class<?>[]{String[].class});
                 scan.invoke(scanner, new Object[]{packages});
+                for(String pack : packages){
+                    System.out.println(pack);
+                }
             } catch (Throwable e) {
                 // spring 2.0
             }
@@ -225,6 +228,7 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
                 }
                 Reference reference = field.getAnnotation(Reference.class);
                 if (reference != null) {
+                    System.out.println("refer :"+field.getName());
                     Object value = refer(reference, field.getType());
                     if (value != null) {
                         field.set(bean, value);
@@ -252,6 +256,7 @@ public class AnnotationBean extends AbstractConfig implements DisposableBean, Be
         ReferenceBean<?> referenceConfig = referenceConfigs.get(key);
         if (referenceConfig == null) {
             referenceConfig = new ReferenceBean<Object>(reference);
+            System.out.println(referenceConfig.toString());
             if (void.class.equals(reference.interfaceClass())
                     && "".equals(reference.interfaceName())
                     && referenceClass.isInterface()) {

@@ -66,7 +66,7 @@ public class RegistryProtocol implements Protocol {
 
     public static RegistryProtocol getRegistryProtocol() {
         if (INSTANCE == null) {
-            ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(Constants.REGISTRY_PROTOCOL); // load
+            INSTANCE = (RegistryProtocol) ExtensionLoader.getExtensionLoader(Protocol.class).getExtension(Constants.REGISTRY_PROTOCOL); // load
         }
         return INSTANCE;
     }

@@ -35,6 +35,7 @@ public class AllChannelHandler extends WrappedChannelHandler {
     public void connected(Channel channel) throws RemotingException {
         ExecutorService cexecutor = getExecutorService();
         try {
+            System.out.println("connected event");
             cexecutor.execute(new ChannelEventRunnable(channel, handler, ChannelState.CONNECTED));
         } catch (Throwable t) {
             throw new ExecutionException("connect event", channel, getClass() + " error when process connected event .", t);
@@ -44,6 +45,7 @@ public class AllChannelHandler extends WrappedChannelHandler {
     public void disconnected(Channel channel) throws RemotingException {
         ExecutorService cexecutor = getExecutorService();
         try {
+            System.out.println("disconnected event");
             cexecutor.execute(new ChannelEventRunnable(channel, handler, ChannelState.DISCONNECTED));
         } catch (Throwable t) {
             throw new ExecutionException("disconnect event", channel, getClass() + " error when process disconnected event .", t);
@@ -53,6 +55,7 @@ public class AllChannelHandler extends WrappedChannelHandler {
     public void received(Channel channel, Object message) throws RemotingException {
         ExecutorService cexecutor = getExecutorService();
         try {
+//            System.out.println("received event");
             cexecutor.execute(new ChannelEventRunnable(channel, handler, ChannelState.RECEIVED, message));
         } catch (Throwable t) {
             throw new ExecutionException(message, channel, getClass() + " error when process received event .", t);
@@ -62,6 +65,7 @@ public class AllChannelHandler extends WrappedChannelHandler {
     public void caught(Channel channel, Throwable exception) throws RemotingException {
         ExecutorService cexecutor = getExecutorService();
         try {
+            System.out.println("caught event");
             cexecutor.execute(new ChannelEventRunnable(channel, handler, ChannelState.CAUGHT, exception));
         } catch (Throwable t) {
             throw new ExecutionException("caught event", channel, getClass() + " error when process caught event .", t);

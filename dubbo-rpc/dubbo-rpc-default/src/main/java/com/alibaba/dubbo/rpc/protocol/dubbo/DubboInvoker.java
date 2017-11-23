@@ -68,6 +68,7 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
 
     @Override
     protected Result doInvoke(final Invocation invocation) throws Throwable {
+        long startTime = System.currentTimeMillis();
         RpcInvocation inv = (RpcInvocation) invocation;
         final String methodName = RpcUtils.getMethodName(invocation);
         inv.setAttachment(Constants.PATH_KEY, getUrl().getPath());
@@ -87,14 +88,18 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
                 boolean isSent = getUrl().getMethodParameter(methodName, Constants.SENT_KEY, false);
                 currentClient.send(inv, isSent);
                 RpcContext.getContext().setFuture(null);
+                System.out.println("oneWay time: "+(System.currentTimeMillis() - startTime)+"ms");
                 return new RpcResult();
             } else if (isAsync) {
                 ResponseFuture future = currentClient.request(inv, timeout);
                 RpcContext.getContext().setFuture(new FutureAdapter<Object>(future));
+                System.out.println("async time: "+(System.currentTimeMillis() - startTime)+"ms");
                 return new RpcResult();
             } else {
                 RpcContext.getContext().setFuture(null);
-                return (Result) currentClient.request(inv, timeout).get();
+                Result result = (Result) currentClient.request(inv, timeout).get();
+                System.out.println("other time: "+(System.currentTimeMillis() - startTime)+"ms");
+                return result;
             }
         } catch (TimeoutException e) {
             throw new RpcException(RpcException.TIMEOUT_EXCEPTION, "Invoke remote method timeout. method: " + invocation.getMethodName() + ", provider: " + getUrl() + ", cause: " + e.getMessage(), e);

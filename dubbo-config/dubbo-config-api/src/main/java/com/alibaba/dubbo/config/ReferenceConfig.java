@@ -26,6 +26,7 @@ import com.alibaba.dubbo.common.utils.ReflectUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.support.Parameter;
+import com.alibaba.dubbo.registry.integration.RegistryProtocol;
 import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Protocol;
 import com.alibaba.dubbo.rpc.ProxyFactory;
@@ -300,7 +301,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         appendParameters(map, module);
         appendParameters(map, consumer, Constants.DEFAULT_KEY);
         appendParameters(map, this);
-        String prifix = StringUtils.getServiceKey(map);
+        String prefix = StringUtils.getServiceKey(map);
         if (methods != null && methods.size() > 0) {
             for (MethodConfig method : methods) {
                 appendParameters(map, method, method.getName());
@@ -311,7 +312,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                         map.put(method.getName() + ".retries", "0");
                     }
                 }
-                appendAttributes(attributes, method, prifix + "." + method.getName());
+                appendAttributes(attributes, method, prefix + "." + method.getName());
                 checkAndConvertImplicitConfig(method, map, attributes);
             }
         }
@@ -345,6 +346,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             }
         } else {
             if (url != null && url.length() > 0) { // 用户指定URL，指定的URL可能是对点对直连地址，也可能是注册中心URL
+                System.out.println(url);
                 String[] us = Constants.SEMICOLON_SPLIT_PATTERN.split(url);
                 if (us != null && us.length > 0) {
                     for (String u : us) {
@@ -363,6 +365,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                 List<URL> us = loadRegistries(false);
                 if (us != null && us.size() > 0) {
                     for (URL u : us) {
+                        System.out.println(u.toFullString());
                         URL monitorUrl = loadMonitor(u);
                         if (monitorUrl != null) {
                             map.put(Constants.MONITOR_KEY, URL.encode(monitorUrl.toFullString()));
@@ -376,8 +379,11 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             }
 
             if (urls.size() == 1) {
+                System.out.println("refer before urls.size is 1");
                 invoker = refprotocol.refer(interfaceClass, urls.get(0));
+                System.out.println("refer after");
             } else {
+                System.out.println("urls.size is "+urls.size());
                 List<Invoker<?>> invokers = new ArrayList<Invoker<?>>();
                 URL registryURL = null;
                 for (URL url : urls) {

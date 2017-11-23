@@ -50,6 +50,9 @@ public class MonitorFilter implements Filter {
 
     private MonitorFactory monitorFactory;
 
+    public MonitorFilter(){
+    }
+
     public void setMonitorFactory(MonitorFactory monitorFactory) {
         this.monitorFactory = monitorFactory;
     }

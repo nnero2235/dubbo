@@ -109,6 +109,7 @@ public abstract class Wrapper {
             throw new IllegalArgumentException("Can not create wrapper for primitive type: " + c);
 
         String name = c.getName();
+        System.out.println("wrapper makeWrapper:"+name);
         ClassLoader cl = ClassHelper.getClassLoader(c);
 
         StringBuilder c1 = new StringBuilder("public void setPropertyValue(Object o, String n, Object v){ ");
@@ -234,7 +235,6 @@ public abstract class Wrapper {
         cc.addMethod(c1.toString());
         cc.addMethod(c2.toString());
         cc.addMethod(c3.toString());
-
         try {
             Class<?> wc = cc.toClass();
             // setup static field.

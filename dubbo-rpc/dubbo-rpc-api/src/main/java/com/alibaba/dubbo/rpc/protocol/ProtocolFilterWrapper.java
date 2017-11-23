@@ -66,7 +66,8 @@ public class ProtocolFilterWrapper implements Protocol {
                     }
 
                     public Result invoke(Invocation invocation) throws RpcException {
-                        return filter.invoke(next, invocation);
+                        Result result = filter.invoke(next, invocation);
+                        return result;
                     }
 
                     public void destroy() {

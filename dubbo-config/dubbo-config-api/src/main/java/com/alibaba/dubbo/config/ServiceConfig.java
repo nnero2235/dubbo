@@ -31,6 +31,10 @@ import com.alibaba.dubbo.rpc.Invoker;
 import com.alibaba.dubbo.rpc.Protocol;
 import com.alibaba.dubbo.rpc.ProxyFactory;
 import com.alibaba.dubbo.rpc.cluster.ConfiguratorFactory;
+import com.alibaba.dubbo.rpc.proxy.AbstractProxyFactory;
+import com.alibaba.dubbo.rpc.proxy.javassist.JavassistProxyFactory;
+import com.alibaba.dubbo.rpc.proxy.jdk.JdkProxyFactory;
+import com.alibaba.dubbo.rpc.proxy.wrapper.StubProxyFactoryWrapper;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.alibaba.dubbo.rpc.support.ProtocolUtils;
 
@@ -193,6 +197,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
                     try {
+                        System.out.println("delay export:"+delay);
                         Thread.sleep(delay);
                     } catch (Throwable e) {
                     }
@@ -341,10 +346,14 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void doExportUrls() {
+        long startTime = System.currentTimeMillis();
         List<URL> registryURLs = loadRegistries(true);
+        long startTime2 = System.currentTimeMillis();
         for (ProtocolConfig protocolConfig : protocols) {
             doExportUrlsFor1Protocol(protocolConfig, registryURLs);
         }
+        System.out.println("export all cost:"+(System.currentTimeMillis()-startTime)+"ms");
+        System.out.println("export none loadregistries cost:"+(System.currentTimeMillis()-startTime2)+"ms");
     }
 
     private void doExportUrlsFor1Protocol(ProtocolConfig protocolConfig, List<URL> registryURLs) {
@@ -513,6 +522,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if ((contextPath == null || contextPath.length() == 0) && provider != null) {
             contextPath = provider.getContextpath();
         }
+        System.out.println(contextPath);
         URL url = new URL(name, host, port, (contextPath == null || contextPath.length() == 0 ? "" : contextPath + "/") + path, map);
 
         if (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class)

@@ -50,7 +50,8 @@ public class InvokerWrapper<T> implements Invoker<T> {
     }
 
     public Result invoke(Invocation invocation) throws RpcException {
-        return invoker.invoke(invocation);
+        Result result = invoker.invoke(invocation);
+        return result;
     }
 
     public void destroy() {

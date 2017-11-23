@@ -34,6 +34,7 @@ public class DubboExporter<T> extends AbstractExporter<T> {
 
     public DubboExporter(Invoker<T> invoker, String key, Map<String, Exporter<?>> exporterMap) {
         super(invoker);
+        System.out.println("DubboExporter:"+key);
         this.key = key;
         this.exporterMap = exporterMap;
     }

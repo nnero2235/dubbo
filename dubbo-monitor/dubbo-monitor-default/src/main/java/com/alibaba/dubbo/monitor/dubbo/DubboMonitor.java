@@ -69,7 +69,7 @@ public class DubboMonitor implements Monitor {
                 try {
                     send();
                 } catch (Throwable t) { // 防御性容错
-                    logger.error("Unexpected error occur at send statistic, cause: " + t.getMessage(), t);
+//                    logger.error("Unexpected error occur at send statistic, cause: " + t.getMessage(), t);
                 }
             }
         }, monitorInterval, monitorInterval, TimeUnit.MILLISECONDS);
@@ -77,7 +77,7 @@ public class DubboMonitor implements Monitor {
 
     public void send() {
         if (logger.isInfoEnabled()) {
-            logger.info("Send statistics to monitor " + getUrl());
+//            logger.info("Send statistics to monitor " + getUrl());
         }
         String timestamp = String.valueOf(System.currentTimeMillis());
         for (Map.Entry<Statistics, AtomicReference<long[]>> entry : statisticsMap.entrySet()) {

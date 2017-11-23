@@ -162,6 +162,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
                 }
                 String sysaddress = System.getProperty("dubbo.registry.address");
                 if (sysaddress != null && sysaddress.length() > 0) {
+                    System.out.println(sysaddress);
                     address = sysaddress;
                 }
                 if (address != null && address.length() > 0

@@ -51,6 +51,7 @@ public class GenericImplFilter implements Filter {
     private static final Class<?>[] GENERIC_PARAMETER_TYPES = new Class<?>[]{String.class, String[].class, Object[].class};
 
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        System.out.println("Genericimpl filter");
         String generic = invoker.getUrl().getParameter(Constants.GENERIC_KEY);
         if (ProtocolUtils.isGeneric(generic)
                 && !Constants.$INVOKE.equals(invocation.getMethodName())

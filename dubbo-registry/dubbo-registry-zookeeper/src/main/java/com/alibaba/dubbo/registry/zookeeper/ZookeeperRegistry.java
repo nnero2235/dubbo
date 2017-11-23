@@ -107,7 +107,8 @@ public class ZookeeperRegistry extends FailbackRegistry {
 
     protected void doRegister(URL url) {
         try {
-            zkClient.create(toUrlPath(url), url.getParameter(Constants.DYNAMIC_KEY, true));
+            String urlPath = toUrlPath(url);
+            zkClient.create(urlPath, url.getParameter(Constants.DYNAMIC_KEY, true));
         } catch (Throwable e) {
             throw new RpcException("Failed to register " + url + " to zookeeper " + getUrl() + ", cause: " + e.getMessage(), e);
         }
